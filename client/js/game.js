@@ -41,8 +41,8 @@ function move()
 function connect()
 {
   $('#letMeIn').fadeOut();
-  //socket = io.connect('localhost');
-  socket = io.connect('http://10.246.38.47');
+  socket = io.connect('localhost');
+  //socket = io.connect('http://10.246.38.47');
     socket.on('connect', function() {
       $('#nickName').attr('readOnly', '1');
       $("#chat").fadeIn();
@@ -58,6 +58,7 @@ function connect()
   //When a bomb is dropped
   socket.on('bombDropped', function(bombData) {
       flash('Bomb Dropped. id: ' + bombData.id + ', x: ' + bombData.x + ', y: ' + bombData.y, '840');
+      addBomb(bombData.id, bombData.x, bombData.y);
   });
 
   //When a bomb is explodes
@@ -95,6 +96,13 @@ function addEnemy(id) {
     .attr({x: 160, y: 144, z: 1, playerId: id});
 
   otherBombers[id] = otherBomber;
+}
+
+function addBomb(id, x, y) {
+  var droppedBomb = Crafty.e("2D, Canvas, bush2, solid, Bomb")
+    .attr({x: x * spriteSize, y: y * spriteSize, z: 1, bombId: id});
+
+  bombs[id] = droppedBomb;
 }
 
 function initializeGame(map, startX, startY)
