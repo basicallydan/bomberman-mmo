@@ -101,7 +101,7 @@ function addEnemy(id) {
 }
 
 function addBomb(id, x, y) {
-  var droppedBomb = Crafty.e("2D, Canvas, bush2, solid, Bomb")
+  var droppedBomb = Crafty.e("2D, Canvas, bomb, solid, Bomb")
     .attr({x: x * spriteSize, y: y * spriteSize, z: 1, bombId: id});
 
   bombs[id] = droppedBomb;
@@ -129,7 +129,8 @@ function initializeGame(map, startX, startY)
       flower: [0,1],
       bush1: [0,2],
       bush2: [1,2],
-      player: [0,3]
+      player: [0,3],
+      bomb: [2,2]
     }
   );
   
