@@ -12,3 +12,7 @@ function changePosition(socket, position) {
         y: position[1]
     });
 }
+
+function playerStopped(socket) {
+    socket.emit('playerStopped');
+}
