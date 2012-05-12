@@ -101,9 +101,20 @@ io.sockets.on('connection', function (socket) {
 
 function bombDropped(clientId, positionX, positionY)
 {
+  blastRadius = 1;
+  explodeDelay = 4000;
   id = "b_" + ++lastBombId;
   console.log("Bomb " + id + " dropped at " + positionX + "," + positionY + " by " + clientId);
-  io.sockets.emit('bombDropped', {id: id, x: positionX, y: positionY, blastRadius: 1} );
+  io.sockets.emit('bombDropped', {id: id, x: positionX, y: positionY} );
+  setTimeout(function() {
+    bombExploded(clientId, id, positionX, positionY, blastRadius)
+  }, explodeDelay);
+}
+
+function bombExploded(clientId, bombId, positionX, positionY, blastRadius)
+{
+  console.log("Bomb " + id + " EXPLODED!");
+  io.sockets.emit('bombExploded', {id: bombId, x: positionX, y: positionY, blastRadius: blastRadius} );  
 }
 
 function sendMessageToAll(message)

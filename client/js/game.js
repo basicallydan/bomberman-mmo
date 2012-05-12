@@ -57,8 +57,14 @@ function connect()
 
   //When a bomb is dropped
   socket.on('bombDropped', function(bombData) {
-      flash('Bomb Dropped. x: ' + bombData.x + ', y: ' + bombData.y + ', blastRadius: ' + bombData.blastRadius, '800');
+      flash('Bomb Dropped. id: ' + bombData.id + ', x: ' + bombData.x + ', y: ' + bombData.y, '840');
   });
+
+  //When a bomb is explodes
+  socket.on('bombExploded', function(bombData) {
+      flash('Bomb Exploded. id: ' + bombData.id + ', x: ' + bombData.x + ', y: ' + bombData.y + ', blastRadius: ' + bombData.blastRadius, '800');
+  });
+
 
   //When a chat message is received
   socket.on('receiveChat', function (data) {
