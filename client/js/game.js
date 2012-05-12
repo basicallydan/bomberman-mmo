@@ -49,7 +49,7 @@ function connect()
     //Should be received after handshake
   socket.on('welcome', function(data)
   {
-    initializeGame(data.gameState, data.x, data.y);
+    initializeGame(data.gameState, data.x, data.y, data.bombs, data.players);
   });
 
   //When a bomb is dropped
@@ -235,5 +235,13 @@ function initializeGame(map, startX, startY)
         console.log()
       })
       ;
+
+    for(var b in map.bombs) {
+      addBomb(b, map.bombs[b].x, map.bombs[b].y);
+    }
+
+    for(var p in map.players) {
+      addEnemy(p, map.players[p].x, map.players[p].y);
+    }
   });
 };
