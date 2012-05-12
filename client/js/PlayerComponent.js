@@ -12,6 +12,9 @@ Crafty.c('Bomber', {
         if (e.key == Crafty.keys['ENTER']) {
           this.trigger('BombDropped', { playerId : this.playerId });
         }
+        if (e.key == Crafty.keys['LEFT_ARROW']) {
+
+        }
       })
       .bind("NewDirection",
         function (direction) {
