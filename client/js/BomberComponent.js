@@ -92,9 +92,9 @@ Crafty.c('Bomber', {
       // A rudimentary way to prevent the user from passing solid areas
       .bind('Moved', function(from) {
         if(this.hit('solid')) {
-          //if(this.isOnTopOfASolid() === false) {
-          this.attr({x: from.x, y:from.y});
-          //}
+          if(this.isOnTopOfASolid() === false) {
+            this.attr({x: from.x, y:from.y});
+          }
         }
         else {
           this.trigger('PlayerMoved', { from : from, to : { x : this.x, y : this.y } });
@@ -106,8 +106,8 @@ Crafty.c('Bomber', {
     if(this.hit('solid')) {
       var hitObject = this.hit('solid');
       console.log('Hit object is at ' + hitObject[0].obj.x + ',' + hitObject[0].obj.y);
-      var gridX = Math.floor(hitObject[0].obj.x / spriteSize) + 1;
-      var gridY = Math.floor(hitObject[0].obj.y / spriteSize) + 1;
+      var gridX = Math.round(hitObject[0].obj.x / spriteSize) + 1;
+      var gridY = Math.round(hitObject[0].obj.y / spriteSize) + 1;
       if(this.getGridPosition()[0] === gridX && this.getGridPosition()[1] === gridY) {
         return true;
       }
@@ -131,6 +131,6 @@ Crafty.c('Bomber', {
     return this;
   },
   getGridPosition : function() {
-    return [Math.floor(this.x / 16), Math.floor(this.y /16)];
+    return [Math.round(this.x / 16), Math.round(this.y /16)];
   }
 });
