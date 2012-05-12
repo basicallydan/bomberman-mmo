@@ -50,9 +50,9 @@ function connect()
     });
 
     //Should be received after handshake
-  socket.on('welcome', function(map)
+  socket.on('welcome', function(data)
   {
-    initializeGame(map);
+    initializeGame(data.gameState, data.x, data.y);
   });
 
   //When a bomb is dropped
@@ -97,12 +97,12 @@ function addEnemy(id) {
   otherBombers[id] = otherBomber;
 }
 
-function initializeGame(map)
+function initializeGame(map, startX, startY)
 {
   var width = map.width;
   var height = map.height;
 
-  Crafty.init(width * spriteSize, height * spriteSize);
+  Crafty.init((2 + width) * spriteSize, (2 + height) * spriteSize);
   Crafty.canvas.init();
   
   //turn the sprite map into usable components
@@ -121,9 +121,9 @@ function initializeGame(map)
   //method to randomy generate the map
   function generateWorld() {
     //generate the grass along the x-axis
-    for(var i = 0; i < width; i++) {
+    for(var i = 0; i <= width + 1; i++) {
       //generate the grass along the y-axis
-      for(var j = 0; j < height; j++) {
+      for(var j = 0; j <= height + 1; j++) {
         grassType = Crafty.math.randomInt(1, 4);
         Crafty.e("2D, Canvas, grass"+grassType)
           .attr({x: i * spriteSize, y: j * spriteSize});
@@ -131,20 +131,20 @@ function initializeGame(map)
     }
     
     //create the bushes along the x-axis which will form the boundaries
-    for(var i = 0; i < 25; i++) {
+    for(var i = 0; i < width + 2; i++) {
       Crafty.e("2D, Canvas, wall_top, solid, bush"+Crafty.math.randomInt(1,2))
-        .attr({x: i * 16, y: 0, z: 2});
+        .attr({x: i * spriteSize, y: 0, z: 2});
       Crafty.e("2D, DOM, wall_bottom, solid, bush"+Crafty.math.randomInt(1,2))
-        .attr({x: i * 16, y: 304, z: 2});
+        .attr({x: i * spriteSize, y: (height + 1) * spriteSize, z: 2});
     }
     
     //create the bushes along the y-axis
     //we need to start one more and one less to not overlap the previous bushes
-    for(var i = 1; i < 19; i++) {
+    for(var i = 1; i < height + 1; i++) {
       Crafty.e("2D, DOM, wall_left, solid, bush"+Crafty.math.randomInt(1,2))
-        .attr({x: 0, y: i * 16, z: 2});
+        .attr({x: 0, y: i * spriteSize, z: 2});
       Crafty.e("2D, Canvas, wall_right, solid, bush"+Crafty.math.randomInt(1,2))
-        .attr({x: 384, y: i * 16, z: 2});
+        .attr({x: (width + 1) * spriteSize, y: i * spriteSize, z: 2});
     }
 
     for(f in map.flowers)
@@ -182,7 +182,7 @@ function initializeGame(map)
     
     //create our player entity with some premade components
     player = Crafty.e("2D, Canvas, player, Bomber, Animate")
-      .attr({x: 160, y: 144, z: 1 })
+      .attr({x: (startX * spriteSize), y: (startY * spriteSize), z: 1 })
       .bomberControls(1)
       .onBombDropped(function(data) {
         console.log('You dropped a bomb at ' + data.gridPosition[0] + ', ' + data.gridPosition[1]);

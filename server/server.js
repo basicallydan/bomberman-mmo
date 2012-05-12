@@ -60,8 +60,14 @@ io.sockets.on('connection', function (socket) {
 
   //On initial message
   socket.on('handshake', function (data) {
-    socket.emit('welcome', gameState);
-    socket.broadcast.emit('playerJoined', {id: id});
+    startX = Math.floor(Math.random()*gameState.width) + 1;
+    startY = Math.floor(Math.random()*gameState.height) + 1;
+    socket.emit('welcome', {
+      gameState: gameState,
+      x: startX,
+      y: startY
+    });
+    socket.broadcast.emit('playerJoined', {id: id, x: startX, y: startY});
     console.log("Got handshake");
     console.log(data);
     clients[id] = {id: socket.id, nickName: data.nickName}
@@ -126,4 +132,6 @@ function sendMessageToAll(message)
 setInterval(function() {
   console.log('Status Update:');
   console.log(clients);
+  console.log('Game state:');
+  console.log(gameState);
 }, 1000);
