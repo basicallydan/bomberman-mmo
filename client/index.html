@@ -12,7 +12,7 @@
 		  	  	$('#letMeIn').fadeOut();
 		  	  	$("#chat").fadeIn();
 		  	  });
-			  socket.on('message sent', function (data) {
+			  socket.on('receiveChat', function (data) {
 			    var m = $('#messages');
 			    m.val(data.message + "\r\n" + m.val());
 			});
@@ -20,7 +20,7 @@
 		function sendMessage()
 		{
 			var m =  $("#message");
-			socket.emit('message received',
+			socket.emit('sendChat',
 				{
 					message: $("#message").val(),
 					nickName: $("#nickName").val()
