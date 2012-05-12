@@ -33,8 +33,8 @@ var player,
     function connect()
     {
         $('#letMeIn').fadeOut();
-      //socket = io.connect('localhost');
-      socket = io.connect('http://10.246.38.47');
+      socket = io.connect('localhost');
+      //socket = io.connect('http://10.246.38.47');
         socket.on('connect', function() {
           $('#nickName').attr('readOnly', '1');
           $("#chat").fadeIn();
@@ -49,7 +49,7 @@ var player,
 
       //When a bomb is dropped
       socket.on('bombDropped', function(bombData) {
-          alert('Bomb Dropped. x: ' + bombData.x + ', y: ' + bombData.y + ', blastRadius: ' + bombData.blastRadius);
+          //alert('Bomb Dropped. x: ' + bombData.x + ', y: ' + bombData.y + ', blastRadius: ' + bombData.blastRadius);
       });
 
       //When a chat message is received
@@ -59,12 +59,12 @@ var player,
       });
 
       socket.on('playerJoined', function(data) {
-        alert('Player Joined: ' + data.id);
+        //alert('Player Joined: ' + data.id);
         addEnemy(data.id);
       });
 
       socket.on('playerMoved', function(data) {
-        alert('Player Moved: ' + data.id + ' To ' + data.x + ',' + data.y);
+        //alert('Player Moved: ' + data.id + ' To ' + data.x + ',' + data.y);
       });
     }
 
