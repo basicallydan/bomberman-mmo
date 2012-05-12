@@ -58,6 +58,7 @@ io.sockets.on('connection', function (socket) {
   //On initial message
   socket.on('handshake', function (data) {
     socket.emit('welcome', map);
+    socket.broadcast.emit('playerJoined', {id: id});
     console.log("Got handshake");
     console.log(data);
     clients[id] = {id: socket.id}

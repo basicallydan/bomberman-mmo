@@ -37,6 +37,10 @@
 				$('#messages').append('<p>' + data.message + '</p>');
 				$("#messages").prop({ scrollTop: $("#messages").prop("scrollHeight") });
 			  });
+
+			  socket.on('playerJoined', function(data) {
+			  	alert('Player Joined: ' + data.id);
+			  });
 			}
 
 			function sendMessage()
@@ -96,13 +100,22 @@
 
 				<br />
 
-				x: <input type="text" name="bombx" id="bombx" /> y: <input type="text" name="bomby" id="bomby" />
+				x: <input type="text" name="bombx" id="bombx" />
+				<br />
+				y: <input type="text" name="bomby" id="bomby" />
 				<input type="button" onclick="dropBombTest();" value="drop bomb!!" />
 
 				<br />
 
+<<<<<<< HEAD
 				x: <input type="text" name="movex" id="movex" /> y: <input type="text" name="movey" id="movey" />
 				<input type="button" onclick="moveTest();" value="move there!" />
+=======
+				x: <input type="text" name="movex" id="movex" />
+				<br />
+				y: <input type="text" name="movey" id="movey" />
+				<input type="button" onclick="move();" value="move there!" />
+>>>>>>> d843208949524a2b8ca06745e8d5e1b529e106cf
 			</div>
 			<br />
 			<input type="text" name="message" id="message" />
