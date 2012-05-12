@@ -1,0 +1,27 @@
+<html>
+	<head>
+		<script src="/js/jquery-1.7.2.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script>
+		  var socket = io.connect('http://10.246.38.47');
+		  socket.on('message sent', function (data) {
+		    var m = $('#messages');
+		    m.val(data.message + "\r\n" + m.val());
+		  });
+		  function sendMessage()
+		  {
+	  		var m =  $("#message");
+		  	socket.emit('message received',
+		  		{message: m.val()});
+		  	m.val('');
+		  }
+		</script>
+	</head>
+	<body>
+		<textarea rows="10" id="messages">Connecting...
+		</textarea>
+		<br />
+		<input type="text" name="message" id="message" />
+		<input type="button" onclick="sendMessage();" value="send"/>
+	</body>
+</html>
