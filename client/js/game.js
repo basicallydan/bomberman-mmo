@@ -41,8 +41,8 @@ function move()
 function connect()
 {
     $('#letMeIn').fadeOut();
-  socket = io.connect('localhost');
-  //socket = io.connect('http://10.246.38.47');
+  //socket = io.connect('localhost');
+  socket = io.connect('http://10.246.38.47');
     socket.on('connect', function() {
       $('#nickName').attr('readOnly', '1');
       $("#chat").fadeIn();
