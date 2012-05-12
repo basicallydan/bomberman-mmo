@@ -2,13 +2,13 @@ var spriteSize = 16;
 var player,
   otherBombers = {},
   socket;
-var flash_id = 0;
+var flashId = 0;
 
 function flash(message, background)
 {
-  flash_id += 1;
-  $('body').append('<div style="background-color: #' + background + ';" id="flash-' + flash_id + '" class="flash">' + message + '</div>');
-  $('#flash-' + flash_id).fadeOut(6000);
+  flashId += 1;
+  $('body').append('<div style="background-color: #' + background + ';" id="flash-' + flashId + '" class="flash">' + message + '</div>');
+  $('#flash-' + flashId).fadeOut(6000);
 }
 
 function sendMessage()

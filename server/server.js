@@ -6,9 +6,10 @@ var app = require('http').createServer(handler)
 
 var clients = new Array();
 
+var spriteSize = 16;
 var lastBombId = 0;
 
-map = {
+gameState = {
   width: 25,
   height: 20,
   flowers: [
@@ -59,12 +60,11 @@ io.sockets.on('connection', function (socket) {
 
   //On initial message
   socket.on('handshake', function (data) {
-    socket.emit('welcome', map);
+    socket.emit('welcome', gameState);
     socket.broadcast.emit('playerJoined', {id: id});
     console.log("Got handshake");
     console.log(data);
-    clients[id] = {id: socket.id}
-    clients[id].nickName = data.nickName;
+    clients[id] = {id: socket.id, nickName: data.nickName}
     sendMessageToAll(data.nickName + ' has joined');
   });
 
@@ -72,12 +72,6 @@ io.sockets.on('connection', function (socket) {
   //On chat message receieved
   socket.on('sendChat', function (data) {
      //Nickname changed
-    if (clients[id].nickName != data.nickName)
-    {
-      sendMessageToAll(clients[id].nickName + " is now called " + data.nickName);
-      clients[id].nickName = data.nickName;
-    }
-
     console.log("Got Data");
     console.log(data);
     var message = data.nickName + ": " + data.message;
@@ -86,8 +80,11 @@ io.sockets.on('connection', function (socket) {
 
   socket.on('disconnect', function() {
     console.log('Client disconnected!');
-    sendMessageToAll(clients[id].nickName + ' has left');
-    delete clients[id]
+    if (!(typeof clients[id] === 'undefined'))
+    {
+      sendMessageToAll(clients[id].nickName + ' has left');
+      delete clients[id];
+    }
   });
 
   socket.on('dropBomb', function (data) {
@@ -95,6 +92,9 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('move', function (data) {
+    client = clients[id];
+    client.x = data.x;
+    client.y = data.y;
     socket.broadcast.emit('playerMoved', {id: id, x: data.x, y: data.y} )
   });
 });
@@ -123,7 +123,7 @@ function sendMessageToAll(message)
 }
 
 //Probably won't need this but w/e
-// setInterval(function() {
-//   console.log('Status Update:');
-//   console.log(clients);
-// }, 1000);
+setInterval(function() {
+  console.log('Status Update:');
+  console.log(clients);
+}, 1000);
