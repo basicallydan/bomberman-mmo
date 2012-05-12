@@ -40,8 +40,10 @@ function handler (request, response) {
 io.sockets.on('connection', function (socket) {
   socket.emit('message sent', { message: 'Hello new person' });
   socket.on('message received', function (data) {
-  	socket.broadcast.emit('message sent', { message: data.message})
-  	socket.emit('message sent', { message: data.message})
+    console.log("Got Data");
     console.log(data);
+    var message = data.nickName + ": " + data.message;
+    socket.broadcast.emit('message sent', { message: message})
+    socket.emit('message sent', { message: message})
   });
 });

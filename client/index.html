@@ -3,25 +3,46 @@
 		<script src="/js/jquery-1.7.2.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
 		<script>
-		  var socket = io.connect('http://10.246.38.47');
-		  socket.on('message sent', function (data) {
-		    var m = $('#messages');
-		    m.val(data.message + "\r\n" + m.val());
-		  });
-		  function sendMessage()
+		  var socket;
+		  function connect()
 		  {
-	  		var m =  $("#message");
-		  	socket.emit('message received',
-		  		{message: m.val()});
-		  	m.val('');
-		  }
+		  	socket = io.connect('http://10.246.38.47');
+		  	  socket.on('connect', function() {
+		  	  	$('#nickName').attr('readOnly', '1');
+		  	  	$('#letMeIn').fadeOut();
+		  	  	$("#chat").fadeIn();
+		  	  });
+			  socket.on('message sent', function (data) {
+			    var m = $('#messages');
+			    m.val(data.message + "\r\n" + m.val());
+			});
+		}
+		function sendMessage()
+		{
+			var m =  $("#message");
+			socket.emit('message received',
+				{
+					message: $("#message").val(),
+					nickName: $("#nickName").val()
+				}
+			);
+			m.val('');
+		}
 		</script>
 	</head>
 	<body>
-		<textarea rows="10" id="messages">Connecting...
-		</textarea>
-		<br />
-		<input type="text" name="message" id="message" />
-		<input type="button" onclick="sendMessage();" value="send"/>
+		<h1>Something</h1>
+		<div id="nickname">
+			<h2>Nickname</h2>
+			<input type="text" name="nickName" id="nickName" />
+			<input type="button" id="letMeIn" onclick="connect();" value="Let me in!"/>
+		</div>
+		<div id="chat" style="display: none;">
+			<textarea rows="10" id="messages">Connecting...
+			</textarea>
+			<br />
+			<input type="text" name="message" id="message" />
+			<input type="button" onclick="sendMessage();" value="send"/>
+		</div>
 	</body>
 </html>
