@@ -96,6 +96,11 @@ function connect()
     destroyEnemy(data.id);
   });
 
+  socket.on('dead', function(data) {
+    flash('YOU IS DEAD!', 'F00');
+    destroyEnemy(data.id);
+  });
+
   socket.on('playerMoved', function(data) {
     console.log('Player Moved: ' + data.id + ' To ' + data.x + ',' + data.y);
     otherBombers[data.id].moveBomber({ x : data.x, y : data.y });
