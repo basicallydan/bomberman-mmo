@@ -120,17 +120,19 @@ function bombDropped(clientId, positionX, positionY)
   id = "b_" + ++lastBombId;
   console.log("Bomb " + id + " dropped at " + positionX + "," + positionY + " by " + clientId);
   io.sockets.emit('bombDropped', {id: id, x: positionX, y: positionY} );
-  gameState.bombs[id] = {x: positionX, y: positionY, id: id}
-  setTimeout(function() {
-    bombExploded(clientId, id, positionX, positionY, blastRadius)
-  }, explodeDelay);
+  gameState.bombs[id] = {x: positionX, y: positionY, id: id, blastRadius: 4}
+  setTimeout( bombExploded(id), explodeDelay);
 }
 
-function bombExploded(clientId, bombId, positionX, positionY, blastRadius)
+function bombExploded(bombId)
 {
-  console.log("Bomb " + id + " EXPLODED!");
-  io.sockets.emit('bombExploded', {id: bombId, x: positionX, y: positionY, blastRadius: blastRadius} );  
-  delete gameState.bombs[id]
+  return function()
+  {
+    console.log("Bomb " + bombId + " EXPLODED!");
+    bomb = gameState.bombs[bombId];
+    io.sockets.emit('bombExploded', {id: bombId, x: bomb.x, y: bomb.y, blastRadius: bomb.blastRadius} );  
+    delete bomb
+  }
 }
 
 function sendMessageToAll(message)
