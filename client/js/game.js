@@ -62,6 +62,10 @@ var player,
         alert('Player Joined: ' + data.id);
         addEnemy(data.id);
       });
+
+      socket.on('playerMoved', function(data) {
+        alert('Player Moved: ' + data.id + ' To ' + data.x + ',' + data.y);
+      });
     }
 
 window.onload = function() {

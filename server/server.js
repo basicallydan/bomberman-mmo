@@ -93,8 +93,7 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('move', function (data) {
-    console.log("Got Data");
-    console.log(data);
+    socket.broadcast.emit('playerMoved', {id: id, x: data.x, y: data.y} )
   });
 });
 
