@@ -10,7 +10,7 @@ Crafty.c('Bomber', {
       //change direction when a direction change event is received
       .bind('KeyDown', function (e) {
         if (e.key == Crafty.keys['ENTER']) {
-          this.trigger('BombDropped', { playerId : this.playerId });
+          this.trigger('BombDropped', { playerId : this.playerId, gridPosition: this.getGridPosition() });
         }
         if (e.key == Crafty.keys['LEFT_ARROW']) {
 
@@ -53,5 +53,8 @@ Crafty.c('Bomber', {
   onBombDropped : function(callback) {
     this.bind('BombDropped', callback)
     return this;
+  },
+  getGridPosition : function() {
+    return [Math.floor(this.x / 16), Math.floor(this.y /16)];
   }
 });

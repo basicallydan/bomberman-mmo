@@ -80,8 +80,8 @@ window.onload = function() {
     player = Crafty.e("2D, Canvas, player, Bomber, Animate")
       .attr({x: 160, y: 144, z: 1, playerId: 1})
       .bomberControls(1)
-      .onBombDropped(function(playerId) {
-        alert("You dropped a bomb, " + playerId);
+      .onBombDropped(function(data) {
+        alert("You dropped a bomb, " + data.playerId + ' at ' + data.gridPosition[0] + ', ' + data.gridPosition[1]);
       });
   });
 };
