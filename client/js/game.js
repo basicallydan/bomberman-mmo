@@ -64,7 +64,7 @@ var player,
       });
 
       socket.on('playerMoved', function(data) {
-        alert('Player Moved: ' + data.id + ' To ' + data.x + ',' + data.y);
+        console.log('Player Moved: ' + data.id + ' To ' + data.x + ',' + data.y);
       });
     }
 
