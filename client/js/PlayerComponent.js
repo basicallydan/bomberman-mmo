@@ -8,9 +8,12 @@ Crafty.c('Bomber', {
       .animate("walk_up", 3, 3, 5)
       .animate("walk_down", 0, 3, 2)
       //change direction when a direction change event is received
-      .bind('KeyDown', function () {
-        if (this.isDown('ENTER')) {
+      .bind('KeyDown', function (e) {
+        if (e.key == Crafty.keys['ENTER']) {
           this.trigger('BombDropped', { playerId : this.playerId });
+        }
+        if (e.key == Crafty.keys['LEFT_ARROW']) {
+
         }
       })
       .bind("NewDirection",
