@@ -101,7 +101,7 @@ io.sockets.on('connection', function (socket) {
 
 function bombDropped(clientId, positionX, positionY)
 {
-  blastRadius = 1;
+  blastRadius = 4;
   explodeDelay = 4000;
   id = "b_" + ++lastBombId;
   console.log("Bomb " + id + " dropped at " + positionX + "," + positionY + " by " + clientId);
