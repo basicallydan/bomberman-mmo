@@ -5,6 +5,17 @@ var player,
   socket;
 var flashId = 0;
 
+function removeItem(arr){
+    var what, a= arguments, L= a.length, ax;
+    while(L> 1 && arr.length){
+        what= a[--L];
+        while((ax= arr.indexOf(what))!= -1){
+            arr.splice(ax, 1);
+        }
+    }
+    return arr;
+}
+
 function flash(message, background)
 {
   flashId += 1;
@@ -42,8 +53,8 @@ function move()
 function connect()
 {
   $('#letMeIn').fadeOut();
-  socket = io.connect('localhost');
-  //socket = io.connect('http://10.246.38.47');
+  // socket = io.connect('localhost');
+  socket = io.connect('http://10.246.38.47');
     socket.on('connect', function() {
       $('#nickName').attr('readOnly', '1');
       $("#chat").fadeIn();
@@ -109,7 +120,7 @@ function addBomb(id, x, y) {
 
 function explodeBomb(id) {
   bombs[id].destroy();
-  delete bombs[id];
+  // delete bombs[id];
 }
 
 function initializeGame(map, startX, startY)
@@ -197,7 +208,7 @@ function initializeGame(map, startX, startY)
     
     //create our player entity with some premade components
     player = Crafty.e("2D, Canvas, player, Bomber, Animate")
-      .attr({x: (startX * spriteSize), y: (startY * spriteSize), z: 1 })
+      .attr({x: (startX), y: (startY), z: 1 })
       .bomberControls(1)
       .onBombDropped(function(data) {
         console.log('You dropped a bomb at ' + data.gridPosition[0] + ', ' + data.gridPosition[1]);
@@ -206,6 +217,10 @@ function initializeGame(map, startX, startY)
       .onPlayerMoved(function(data) {
         console.log("Moved from " + data.from.x +',' + data.from.y + ' to ' + data.to.x + ',' + data.to.y);
         changePosition(socket, [data.to.x, data.to.y]);
-      });
+      })
+      .onPlayerKeyboardChanged(function(data) {
+        console.log()
+      })
+      ;
   });
 };
