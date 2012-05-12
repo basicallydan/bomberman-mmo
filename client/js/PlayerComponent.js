@@ -16,6 +16,11 @@ Crafty.c('Bomber', {
 
         }
       })
+      .bind('KeyUp', function(e) {
+        if (e.key == Crafty.keys['ENTER']) {
+          this.trigger('BombDropped', { playerId : this.playerId, gridPosition: this.getGridPosition() });
+        }
+      })
       .bind("NewDirection",
         function (direction) {
           if (direction.x < 0) {
@@ -43,6 +48,9 @@ Crafty.c('Bomber', {
         if(this.hit('solid')){
           this.attr({x: from.x, y:from.y});
         }
+        else {
+          this.trigger('PlayerMoved', { from : from, to : { x : this.x, y : this.y } });
+        }
       });
     return this;
   },
@@ -53,6 +61,9 @@ Crafty.c('Bomber', {
   onBombDropped : function(callback) {
     this.bind('BombDropped', callback)
     return this;
+  },
+  onPlayerMoved : function (callback) {
+    this.bind('PlayerMoved', callback)
   },
   getGridPosition : function() {
     return [Math.floor(this.x / 16), Math.floor(this.y /16)];

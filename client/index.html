@@ -33,6 +33,7 @@
 			  });
 
 			}
+			
 			function sendMessage()
 			{
 				var m =  $("#message");
@@ -44,10 +45,22 @@
 				);
 				m.val('');
 			}
+
 			function dropBombTest()
 			{
-				dropBomb(socket, $("#dropBombPlayerId").val(), [23, 43]);
+				x = $('#bombx').val();
+				y = $('#bomby').val();
+				pid = $("#playerId").val();
+				dropBomb(socket, pid, [x, y]);
 			}
+			function move()
+			{
+				x = $('#movex').val();
+				y = $('#movey').val();
+				pid = $("#playerId").val();
+				move(socket, pid, [x, y]);
+			}
+
 		</script>
 		<style>
 			body, html { margin:0; padding: 0; overflow:hidden; font-family:Arial; font-size:20px }
@@ -73,9 +86,23 @@
 			</div>
 			<div id="testcommands">
 				<h2>Test commands</h2>
-				<input type="text" name="dropBombPlayerId" id="dropBombPlayerId" />
-				<input type="button" onclick="dropBombTest();" value="dropBomb" />
+
+				<p>Player id:</p>
+				<input type="text" name="playerId" id="playerId" />
+
+				<br />
+
+				x: <input type="text" name="bombx" id="bombx" /> y: <input type="text" name="bomby" id="bomby" />
+				<input type="button" onclick="dropBombTest();" value="drop bomb!!" />
+
+				<br />
+
+				x: <input type="text" name="movex" id="movex" /> y: <input type="text" name="movey" id="movey" />
+				<input type="button" onclick="move();" value="move there!" />
 			</div>
+			<br />
+			<input type="text" name="message" id="message" />
+			<input type="button" onclick="sendMessage();" value="send"/>
 		</div>
 	</body>
 </html>

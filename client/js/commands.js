@@ -6,10 +6,10 @@ function dropBomb(socket, playerId, position) {
     });
 }
 
-function move(socket, position) {
+function move(socket, playerId, position) {
     socket.emit('move',
     {
         x: position[0],
         y: position[1]
-    })
+    });
 }

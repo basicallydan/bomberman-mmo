@@ -91,6 +91,10 @@ io.sockets.on('connection', function (socket) {
     bombDropped(id, data.gridPosition[0], data.gridPosition[1]);
   });
 
+  socket.on('move', function (data) {
+    console.log("Got Data");
+    console.log(data);
+  });
 });
 
 function bombDropped(clientId, positionX, positionY)
