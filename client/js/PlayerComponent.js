@@ -7,15 +7,6 @@ Crafty.c('Bomber', {
       .animate("walk_right", 9, 3, 11)
       .animate("walk_up", 3, 3, 5)
       .animate("walk_down", 0, 3, 2)
-      //change direction when a direction change event is received
-      .bind('KeyDown', function (e) {
-        if (e.key == Crafty.keys['ENTER']) {
-          this.trigger('BombDropped', { playerId : this.playerId, gridPosition: this.getGridPosition() });
-        }
-        if (e.key == Crafty.keys['LEFT_ARROW']) {
-
-        }
-      })
       .bind('KeyUp', function(e) {
         if (e.key == Crafty.keys['ENTER']) {
           this.trigger('BombDropped', { playerId : this.playerId, gridPosition: this.getGridPosition() });

@@ -73,6 +73,7 @@ function connect()
 
   socket.on('playerMoved', function(data) {
     console.log('Player Moved: ' + data.id + ' To ' + data.x + ',' + data.y);
+    otherBombers[data.id].moveBomber({ x : data.x, y : data.y });
   });
 }
 
