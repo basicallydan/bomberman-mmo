@@ -37,11 +37,6 @@ function handler (request, response) {
     });
 }
 
- setInterval(function() {
-   console.log('Status Update:');
-   console.log(clients);
- }, 1000);
-
 //When connections happen
 io.sockets.on('connection', function (socket) {
   var id = "c_" + socket.id.toString();
@@ -58,7 +53,6 @@ io.sockets.on('connection', function (socket) {
     clients[id].nickName = data.nickName;
     sendToAll(data.nickName + ' has joined');
   });
-
 
 
   //On chat message receieved
@@ -83,19 +77,23 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('dropBomb', function (data) {
-    console.log("Got Data");
-    console.log(data);
+    bombDropped(id, data.gridPosition[0], data.gridPosition[1]);
   });
 
-  socket.on('message', function(message) {
-      console.log('Receieved message');
-      console.log(message);
-    }
-  );
-
-  function sendToAll(message)
-  {
-    socket.broadcast.emit('receiveChat', { message: message})
-    socket.emit('receiveChat', { message: message})
-  }
 });
+
+function bombDropped(clientId, positionX, positionY)
+{
+  console.log("Bomb dropped at " + positionX + "," + positionY + " by " + clientId);
+}
+
+function sendToAll(message)
+{
+  io.sockets.emit('receiveChat', { message: message})
+}
+
+//Probably won't need this but w/e
+setInterval(function() {
+  console.log('Status Update:');
+  console.log(clients);
+}, 1000);
