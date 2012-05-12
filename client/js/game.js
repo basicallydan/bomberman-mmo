@@ -2,71 +2,79 @@ var spriteSize = 16;
 var player,
   otherBombers = {},
   socket;
+var flash_id = 0;
 
-    function sendMessage()
+function flash(message)
+{
+  flash_id += 1;
+  $('body').append('<div id="flash-' + flash_id + '" class="flash">' + message + '</div>');
+  $('#flash-' + flash_id).fadeOut(6000);
+}
+
+function sendMessage()
+{
+  var m =  $("#message");
+  socket.emit('sendChat',
     {
-      var m =  $("#message");
-      socket.emit('sendChat',
-        {
-          message: $("#message").val(),
-          nickName: $("#nickName").val()
-        }
-      );
-      m.val('');
+      message: $("#message").val(),
+      nickName: $("#nickName").val()
     }
+  );
+  m.val('');
+}
 
-    function dropBombTest()
-    {
-      x = $('#bombx').val();
-      y = $('#bomby').val();
-      pid = $("#playerId").val();
-      dropBomb(socket, pid, [x, y]);
-    }
-    function move()
-    {
-      x = $('#movex').val();
-      y = $('#movey').val();
-      pid = $("#playerId").val();
-      move(socket, pid, [x, y]);
-    }
-      
-    function connect()
-    {
-        $('#letMeIn').fadeOut();
-      //socket = io.connect('localhost');
-      socket = io.connect('http://10.246.38.47');
-        socket.on('connect', function() {
-          $('#nickName').attr('readOnly', '1');
-          $("#chat").fadeIn();
-          socket.emit('handshake', {nickName: $('#nickName').val() } )
-        });
+function dropBombTest()
+{
+  x = $('#bombx').val();
+  y = $('#bomby').val();
+  pid = $("#playerId").val();
+  dropBomb(socket, pid, [x, y]);
+}
+function move()
+{
+  x = $('#movex').val();
+  y = $('#movey').val();
+  pid = $("#playerId").val();
+  move(socket, pid, [x, y]);
+}
+  
+function connect()
+{
+    $('#letMeIn').fadeOut();
+  //socket = io.connect('localhost');
+  socket = io.connect('http://10.246.38.47');
+    socket.on('connect', function() {
+      $('#nickName').attr('readOnly', '1');
+      $("#chat").fadeIn();
+      socket.emit('handshake', {nickName: $('#nickName').val() } )
+    });
 
-        //Should be received after handshake
-      socket.on('welcome', function(map)
-      {
-            initializeGame(map);
-      });
+    //Should be received after handshake
+  socket.on('welcome', function(map)
+  {
+        initializeGame(map);
+  });
 
-      //When a bomb is dropped
-      socket.on('bombDropped', function(bombData) {
-          alert('Bomb Dropped. x: ' + bombData.x + ', y: ' + bombData.y + ', blastRadius: ' + bombData.blastRadius);
-      });
+  //When a bomb is dropped
+  socket.on('bombDropped', function(bombData) {
+      flash('Bomb Dropped. x: ' + bombData.x + ', y: ' + bombData.y + ', blastRadius: ' + bombData.blastRadius);
+  });
 
-      //When a chat message is received
-      socket.on('receiveChat', function (data) {
-      $('#messages').append('<p>' + data.message + '</p>');
-      $("#messages").prop({ scrollTop: $("#messages").prop("scrollHeight") });
-      });
+  //When a chat message is received
+  socket.on('receiveChat', function (data) {
+  $('#messages').append('<p>' + data.message + '</p>');
+  $("#messages").prop({ scrollTop: $("#messages").prop("scrollHeight") });
+  });
 
-      socket.on('playerJoined', function(data) {
-        alert('Player Joined: ' + data.id);
-        addEnemy(data.id);
-      });
+  socket.on('playerJoined', function(data) {
+    flash('Player Joined: ' + data.id);
+    addEnemy(data.id);
+  });
 
-      socket.on('playerMoved', function(data) {
-        console.log('Player Moved: ' + data.id + ' To ' + data.x + ',' + data.y);
-      });
-    }
+  socket.on('playerMoved', function(data) {
+    console.log('Player Moved: ' + data.id + ' To ' + data.x + ',' + data.y);
+  });
+}
 
 window.onload = function() {
   $('#nickName').val('user' + Math.floor(Math.random()*10000));
