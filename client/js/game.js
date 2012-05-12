@@ -1,6 +1,7 @@
 var spriteSize = 16;
 var player,
   otherBombers = {},
+  bombs = {},
   socket;
 var flashId = 0;
 
@@ -64,6 +65,7 @@ function connect()
   //When a bomb is explodes
   socket.on('bombExploded', function(bombData) {
       flash('Bomb Exploded. id: ' + bombData.id + ', x: ' + bombData.x + ', y: ' + bombData.y + ', blastRadius: ' + bombData.blastRadius, '800');
+      explodeBomb(bombData.id);
   });
 
 
@@ -114,6 +116,11 @@ function addBomb(id, x, y) {
     .attr({x: x * spriteSize, y: y * spriteSize, z: 1, bombId: id});
 
   bombs[id] = droppedBomb;
+}
+
+function explodeBomb(id) {
+  bombs[id].destroy();
+  delete bombs[id];
 }
 
 function initializeGame(map, startX, startY)
