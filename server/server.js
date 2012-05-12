@@ -82,11 +82,14 @@ io.sockets.on('connection', function (socket) {
     delete clients[id]
   });
 
+  socket.on('dropBomb', function (data) {
+    console.log("Got Data");
+    console.log(data);
+  });
+
   function sendToAll(message)
   {
     socket.broadcast.emit('receiveChat', { message: message})
     socket.emit('receiveChat', { message: message})
   }
-
 });
-
