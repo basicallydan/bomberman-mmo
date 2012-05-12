@@ -1,5 +1,10 @@
 window.onload = function() {
+  $('#nickName').val('user' + Math.floor(Math.random()*10000));
+  connect();
   //start crafty
+};
+function initializeGame()
+{
   Crafty.init(400, 320);
   Crafty.canvas.init();
   

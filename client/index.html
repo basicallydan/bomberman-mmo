@@ -12,11 +12,12 @@
 		  var socket;
 		  function connect()
 		  {
+	  	  	$('#letMeIn').fadeOut();
 		  	socket = io.connect('localhost');
 		  	//socket = io.connect('http://10.246.38.47');
 		  	  socket.on('connect', function() {
+		  	  	initializeGame();
 		  	  	$('#nickName').attr('readOnly', '1');
-		  	  	$('#letMeIn').fadeOut();
 		  	  	$("#chat").fadeIn();
 		  	  	socket.emit('handshake', {nickName: $('#nickName').val() } )
 		  	  });
