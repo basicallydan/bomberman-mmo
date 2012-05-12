@@ -82,7 +82,13 @@ function connect()
   });
 
   socket.on('dead', function(data) {
-    flash('YOU IS DEAD!!!', 'F00');
+    destroyPlayer();
+  });
+
+  socket.on('enemyDead', function(data) {
+    if(typeof data.id !== 'undefined') {
+      destroyEnemy(data.id);
+    }
   });
 
   socket.on('playerMoved', function(data) {
@@ -109,6 +115,11 @@ function destroyEnemy(id)
 {
   otherBombers[id].destroy();
   delete otherBombers[id];
+}
+
+function destroyPlayer()
+{
+  player.destroy();
 }
 
 function addBomb(id, x, y) {
