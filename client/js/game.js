@@ -34,21 +34,6 @@ function sendMessage()
   );
   m.val('');
 }
-
-function dropBombTest()
-{
-  x = $('#bombx').val();
-  y = $('#bomby').val();
-  pid = $("#playerId").val();
-  dropBomb(socket, pid, [x, y]);
-}
-function move()
-{
-  x = $('#movex').val();
-  y = $('#movey').val();
-  pid = $("#playerId").val();
-  move(socket, pid, [x, y]);
-}
   
 function connect()
 {
@@ -97,6 +82,7 @@ function connect()
   });
 
   socket.on('dead', function(data) {
+    flash('YOU DIED!!!', 'F00');
     destroyPlayer();
   });
 

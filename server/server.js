@@ -73,7 +73,7 @@ io.sockets.on('connection', function (socket) {
     socket.broadcast.emit('playerJoined', {id: id, x: startX * spriteSize, y: startY * spriteSize});
     console.log("Got handshake");
     console.log(data);
-    clients[id] = {id: socket.id, nickName: data.nickName}
+    clients[id] = {id: socket.id, nickName: data.nickName, socket: socket}
     sendMessageToAll(data.nickName + ' has joined');
   });
 
@@ -131,8 +131,25 @@ function bombExploded(bombId)
     console.log("Bomb " + bombId + " EXPLODED!");
     bomb = gameState.bombs[bombId];
     io.sockets.emit('bombExploded', {id: bombId, x: bomb.x, y: bomb.y, blastRadius: bomb.blastRadius} );  
+    for(pId in gameState.players)
+    {
+      player = gameState.players[pId];
+      px = Math.round(player.x / spriteSize);
+      py = Math.round(player.y / spriteSize);
+      console.log(px);
+      console.log(py);
+      for(i = -bomb.blastRadius; i <= bomb.blastRadius; ++i)
+      if (
+          (px == bomb.x - i && py == bomb.y) ||
+          (px == bomb.x && py == bomb.y - i))
+      {
+        console.log(pId)
+        clients[pId].socket.emit('dead');
+        clients[pId].socket.broadcast.emit('enemyDead', {id: pId} )
+      }
+    }
     delete gameState.bombs[bombId];
-    io.sockets.emit('dead');
+    //io.sockets.emit('dead');
   }
 }
 
@@ -144,7 +161,7 @@ function sendMessageToAll(message)
 //Probably won't need this but w/e
 setInterval(function() {
   console.log('Status Update:');
-  console.log(clients);
+  // console.log(clients);
   console.log('Game state:');
   console.log(gameState);
 }, 1000);
