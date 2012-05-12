@@ -49,7 +49,7 @@ function connect()
     //Should be received after handshake
   socket.on('welcome', function(data)
   {
-    initializeGame(data.gameState, data.x, data.y, data.bombs, data.players);
+    initializeGame(data.gameState, data.x, data.y, data.id);
   });
 
   //When a bomb is dropped
@@ -150,7 +150,7 @@ function explodeBomb(id, radius, x, y) {
   delete bombs[id];
 }
 
-function initializeGame(map, startX, startY)
+function initializeGame(map, startX, startY, playerId)
 {
   var width = map.width;
   var height = map.height;
@@ -257,7 +257,7 @@ function initializeGame(map, startX, startY)
     }
 
     for(var p in map.players) {
-      if(p !== gameState.id) {
+      if(p !== playerId) {
         addEnemy(p, map.players[p].x, map.players[p].y);
       }
     }
