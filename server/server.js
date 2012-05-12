@@ -145,7 +145,7 @@ function bombExploded(bombId)
       {
         console.log(pId)
         clients[pId].socket.emit('dead');
-
+        clients[pId].socket.broadcast.emit('enemyDead', {id: pId} )
       }
     }
     delete gameState.bombs[bombId];

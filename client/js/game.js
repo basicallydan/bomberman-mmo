@@ -82,6 +82,7 @@ function connect()
   });
 
   socket.on('dead', function(data) {
+    flash('YOU DIED!!!', 'F00');
     destroyPlayer();
   });
 
