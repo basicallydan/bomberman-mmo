@@ -81,7 +81,10 @@ window.onload = function() {
       .attr({x: 160, y: 144, z: 1, playerId: 1})
       .bomberControls(1)
       .onBombDropped(function(data) {
-        alert("You dropped a bomb, " + data.playerId + ' at ' + data.gridPosition[0] + ', ' + data.gridPosition[1]);
+        console.log("You dropped a bomb, " + data.playerId + ' at ' + data.gridPosition[0] + ', ' + data.gridPosition[1]);
+      })
+      .onPlayerMoved(function(data) {
+        console.log("Moved from " + data.from.x +',' + data.from.y + ' to ' + data.to.x + ',' + data.to.y);
       });
   });
 };
