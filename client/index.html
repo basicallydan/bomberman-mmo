@@ -2,7 +2,7 @@
 	<head>
 		<script src="/js/jquery-1.7.2.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
-		<script type="text/javascript" src="js/messaging.js"></script>
+		<script type="text/javascript" src="js/commands.js"></script>
 		<script>
 		  var socket;
 		  function connect()
@@ -32,8 +32,7 @@
 		}
 		function dropBombTest()
 		{
-			var pid = $("#dropBomb-player1");
-			dropBomb(socket, pid.val(), [23, 43])
+			dropBomb(socket, $("#dropBombPlayerId").val(), [23, 43]);
 		}
 		</script>
 	</head>
@@ -52,10 +51,10 @@
 			<input type="text" name="message" id="message" />
 			<input type="button" onclick="sendMessage();" value="send"/>
 		</div>
-		<div id="test-commands">
+		<div id="testcommands">
 			<h2>Test commands</h2>
-			<input type="text" name="dropBomb-player1" id="dropBomb-player1" />
-			<input type="button" onclick="dropBombTest();" value="send">
+			<input type="text" name="dropBombPlayerId" id="dropBombPlayerId" />
+			<input type="button" onclick="dropBombTest();" value="send" />
 		</div>
 	</body>
 </html>

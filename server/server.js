@@ -46,4 +46,8 @@ io.sockets.on('connection', function (socket) {
     socket.broadcast.emit('receiveChat', { message: message})
     socket.emit('receiveChat', { message: message})
   });
+  socket.on('dropBomb', function (data) {
+    console.log("Got Data");
+    console.log(data);
+  });
 });
