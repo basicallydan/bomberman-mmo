@@ -96,6 +96,7 @@ function initializeGame(map)
       .bomberControls(1)
       .onBombDropped(function(data) {
         console.log("You dropped a bomb, " + data.playerId + ' at ' + data.gridPosition[0] + ', ' + data.gridPosition[1]);
+        dropBomb(socket, data.playerId, [data.gridPosition[0], data.gridPosition[1]]);
       })
       .onPlayerMoved(function(data) {
         console.log("Moved from " + data.from.x +',' + data.from.y + ' to ' + data.to.x + ',' + data.to.y);
