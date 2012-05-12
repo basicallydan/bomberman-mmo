@@ -84,7 +84,7 @@ io.sockets.on('connection', function (socket) {
 
   socket.on('disconnect', function() {
     console.log('Client disconnected!');
-    sendMessageToAll(clients[id] + ' has left');
+    sendMessageToAll(clients[id].nickName + ' has left');
     delete clients[id]
   });
 
