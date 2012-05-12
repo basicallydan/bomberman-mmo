@@ -123,7 +123,7 @@ function destroyEnemy(id)
 }
 
 function addBomb(id, x, y) {
-  var droppedBomb = Crafty.e("2D, Canvas, bomb, solid, Bomb")
+  var droppedBomb = Crafty.e("2D, Canvas, bomb, Bomb")
     .attr({x: x * spriteSize, y: y * spriteSize, z: 1, bombId: id});
 
   bombs[id] = droppedBomb;

@@ -93,7 +93,7 @@ Crafty.c('Bomber', {
       .bind('Moved', function(from) {
         if(this.hit('solid')) {
           //if(this.isOnTopOfASolid() === false) {
-            this.attr({x: from.x, y:from.y});
+          this.attr({x: from.x, y:from.y});
           //}
         }
         else {
