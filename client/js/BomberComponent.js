@@ -9,7 +9,7 @@ Crafty.c('Bomber', {
       .animate("walk_down", 0, 3, 2)
       .bind('KeyUp', function(e) {
         if (e.key == Crafty.keys['ENTER']) {
-          this.trigger('BombDropped', { playerId : this.playerId, gridPosition: this.getGridPosition() });
+          this.trigger('BombDropped', { gridPosition: this.getGridPosition() });
         }
       })
       .bind("NewDirection",
