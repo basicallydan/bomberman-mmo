@@ -7,19 +7,22 @@
 		<script type="text/javascript" src="/js/game.js"></script>
 		<script src="/js/jquery-1.7.2.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
+		<script type="text/javascript" src="js/commands.js"></script>
 		<script>
 		  var socket;
 		  function connect()
 		  {
-		  	socket = io.connect('http://10.246.38.47');
+		  	socket = io.connect('localhost');
+		  	//socket = io.connect('http://10.246.38.47');
 		  	  socket.on('connect', function() {
 		  	  	$('#nickName').attr('readOnly', '1');
 		  	  	$('#letMeIn').fadeOut();
 		  	  	$("#chat").fadeIn();
+		  	  	socket.emit('handshake', {nickName: $('#nickName').val() } )
 		  	  });
 			  socket.on('receiveChat', function (data) {
-			    var m = $('#messages');
-			    m.val(data.message + "\r\n" + m.val());
+				$('#messages').append('<p>' + data.message + '</p>');
+				$("#messages").prop({ scrollTop: $("#messages").prop("scrollHeight") });
 			});
 		}
 		function sendMessage()
@@ -32,6 +35,10 @@
 				}
 			);
 			m.val('');
+		}
+		function dropBombTest()
+		{
+			dropBomb(socket, $("#dropBombPlayerId").val(), [23, 43]);
 		}
 		</script>
 		<style>
@@ -48,11 +55,16 @@
 		</div>
 		<div id="chat" style="display: none;">
 			<h2>Chat</h2>
-			<textarea rows="10" id="messages">Connecting...
-			</textarea>
+			<div id='messages' style='height: 300px; width: 300px; overflow-y: scroll;'>
+			</div>
 			<br />
 			<input type="text" name="message" id="message" />
 			<input type="button" onclick="sendMessage();" value="send"/>
+		</div>
+		<div id="testcommands">
+			<h2>Test commands</h2>
+			<input type="text" name="dropBombPlayerId" id="dropBombPlayerId" />
+			<input type="button" onclick="dropBombTest();" value="send" />
 		</div>
 	</body>
 </html>
