@@ -1,18 +1,47 @@
-var http = require('http');
-http.createServer(function (req, res) {
-  res.writeHead(200, {'Content-Type': 'text/plain'});
-  res.end('Hello World\n');
-}).listen(1337, '127.0.0.1');
+var app = require('http').createServer(handler)
+  , io = require('socket.io').listen(app)
+  , fs = require('fs')
+var path = require('path');
 
-console.log('HTTP Server running at http://127.0.0.1:1337/');
+app.listen(80);
 
-var net = require('net');
+function handler (request, response) {
+ 
+    console.log('request starting...' + request.url);
+     
+    var filePath = request.url;
+    if (filePath == '/')
+        filePath = '/index.html';
+     
+    filePath = "./../client" + filePath;
+    console.log('  file path: ' + filePath);
 
-var server = net.createServer(function (socket) {
-  socket.write('Echo server\r\n');
-  socket.pipe(socket);
+    path.exists(filePath, function(exists) {
+     
+        if (exists) {
+            fs.readFile(filePath, function(error, content) {
+                if (error) {
+                    response.writeHead(500);
+                    response.end();
+                }
+                else {
+                    response.writeHead(200, { 'Content-Type': 'text/html' });
+                    response.end(content, 'utf-8');
+                }
+            });
+        }
+        else {
+            response.writeHead(404);
+            response.end();
+        }
+    });
+}
+
+io.sockets.on('connection', function (socket) {
+  socket.emit('message sent', { message: 'Hello new person' });
+  socket.on('message received', function (data) {
+  	socket.broadcast.emit('message sent', { message: data.message})
+  	socket.emit('message sent', { message: data.message})
+    console.log(data);
+  });
 });
-
-server.listen(1338, '127.0.0.1');
-
-console.log('Echo Server running at http://127.0.0.1:1338/');
