@@ -9,7 +9,7 @@ var clients = new Array();
 var spriteSize = 16;
 var lastBombId = 0;
 
-gameState = {
+var gameState = {
   width: 25,
   height: 20,
   flowers: [
@@ -17,8 +17,8 @@ gameState = {
     {x: 15, y: 15},
     {x: 5, y: 5}
   ],
-  bombs: [],
-  players: []
+  bombs: {},
+  players: {}
 };
 
 app.listen(80);
@@ -64,7 +64,8 @@ io.sockets.on('connection', function (socket) {
   socket.on('handshake', function (data) {
     startX = Math.floor(Math.random()*gameState.width) + 1;
     startY = Math.floor(Math.random()*gameState.height) + 1;
-    gameState.players[id] = {x: startX, y: startY}
+    gameState.players[id] = {x: startX * spriteSize, y: startY * spriteSize}
+
     socket.emit('welcome', {
       gameState: gameState,
       x: startX * spriteSize,
