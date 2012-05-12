@@ -47,6 +47,7 @@ io.sockets.on('connection', function (socket) {
   var id = "c_" + socket.id.toString();
   console.log('Client connected, id: ' + id);
 
+  clients[id] = {id: socket.id}
   //Send initial status packet
   socket.emit('receiveChat', { message: 'Hello new person' });
 
@@ -54,7 +55,7 @@ io.sockets.on('connection', function (socket) {
   socket.on('handshake', function (data) {
     console.log("Got handshake");
     console.log(data);
-    clients[id] = data.nickName;
+    clients[id].nickName = data.nickName;
     sendToAll(data.nickName + ' has joined');
   });
 
@@ -63,10 +64,10 @@ io.sockets.on('connection', function (socket) {
   //On chat message receieved
   socket.on('sendChat', function (data) {
      //Nickname changed
-    if (clients[id] != data.nickName)
+    if (clients[id].nickName != data.nickName)
     {
-      sendToAll(clients[id] + " is now called " + data.nickName);
-      clients[id] = data.nickName;
+      sendToAll(clients[id].nickName + " is now called " + data.nickName);
+      clients[id].nickName = data.nickName;
     }
 
     console.log("Got Data");
