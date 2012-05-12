@@ -6,6 +6,8 @@ var app = require('http').createServer(handler)
 
 var clients = new Array();
 
+var lastBombId = 0;
+
 map = {
   width: 25,
   height: 20,
@@ -99,8 +101,9 @@ io.sockets.on('connection', function (socket) {
 
 function bombDropped(clientId, positionX, positionY)
 {
-  console.log("Bomb dropped at " + positionX + "," + positionY + " by " + clientId);
-  io.sockets.emit('bombDropped', {x: positionX, y: positionY, blastRadius: 1} );
+  id = "b_" + ++lastBombId;
+  console.log("Bomb " + id + " dropped at " + positionX + "," + positionY + " by " + clientId);
+  io.sockets.emit('bombDropped', {id: id, x: positionX, y: positionY, blastRadius: 1} );
 }
 
 function sendMessageToAll(message)
@@ -109,7 +112,7 @@ function sendMessageToAll(message)
 }
 
 //Probably won't need this but w/e
-setInterval(function() {
-  console.log('Status Update:');
-  console.log(clients);
-}, 1000);
+// setInterval(function() {
+//   console.log('Status Update:');
+//   console.log(clients);
+// }, 1000);
