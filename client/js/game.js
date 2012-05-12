@@ -1,11 +1,82 @@
 var spriteSize = 16;
-var player;
+var player,
+  otherBombers = {},
+  socket;
+
+    function sendMessage()
+    {
+      var m =  $("#message");
+      socket.emit('sendChat',
+        {
+          message: $("#message").val(),
+          nickName: $("#nickName").val()
+        }
+      );
+      m.val('');
+    }
+
+    function dropBombTest()
+    {
+      x = $('#bombx').val();
+      y = $('#bomby').val();
+      pid = $("#playerId").val();
+      dropBomb(socket, pid, [x, y]);
+    }
+    function move()
+    {
+      x = $('#movex').val();
+      y = $('#movey').val();
+      pid = $("#playerId").val();
+      move(socket, pid, [x, y]);
+    }
+      
+    function connect()
+    {
+        $('#letMeIn').fadeOut();
+      //socket = io.connect('localhost');
+      socket = io.connect('http://10.246.38.47');
+        socket.on('connect', function() {
+          $('#nickName').attr('readOnly', '1');
+          $("#chat").fadeIn();
+          socket.emit('handshake', {nickName: $('#nickName').val() } )
+        });
+
+        //Should be received after handshake
+      socket.on('welcome', function(map)
+      {
+            initializeGame(map);
+      });
+
+      //When a bomb is dropped
+      socket.on('bombDropped', function(bombData) {
+          alert('Bomb Dropped. x: ' + bombData.x + ', y: ' + bombData.y + ', blastRadius: ' + bombData.blastRadius);
+      });
+
+      //When a chat message is received
+      socket.on('receiveChat', function (data) {
+      $('#messages').append('<p>' + data.message + '</p>');
+      $("#messages").prop({ scrollTop: $("#messages").prop("scrollHeight") });
+      });
+
+      socket.on('playerJoined', function(data) {
+        alert('Player Joined: ' + data.id);
+        addEnemy(data.id);
+      });
+    }
 
 window.onload = function() {
   $('#nickName').val('user' + Math.floor(Math.random()*10000));
   connect();
   //start crafty
 };
+
+function addEnemy(id) {
+  //create our player entity with some premade components
+  var otherBomber = Crafty.e("2D, Canvas, player, OtherBomber, Animate")
+    .attr({x: 160, y: 144, z: 1, playerId: id});
+
+  otherBombers[id] = otherBomber;
+}
 
 function initializeGame(map)
 {
