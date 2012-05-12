@@ -129,6 +129,7 @@ function addEnemy(id, x, y) {
 function destroyEnemy(id)
 {
   otherBombers[id].destroy();
+  delete otherBombers[id];
 }
 
 function destroyPlayer()
@@ -145,7 +146,7 @@ function addBomb(id, x, y) {
 
 function explodeBomb(id) {
   bombs[id].destroy();
-  // delete bombs[id];
+  delete bombs[id];
 }
 
 function initializeGame(map, startX, startY)
