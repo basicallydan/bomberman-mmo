@@ -40,7 +40,7 @@ function move()
   
 function connect()
 {
-    $('#letMeIn').fadeOut();
+  $('#letMeIn').fadeOut();
   //socket = io.connect('localhost');
   socket = io.connect('http://10.246.38.47');
     socket.on('connect', function() {
@@ -52,7 +52,20 @@ function connect()
     //Should be received after handshake
   socket.on('welcome', function(map)
   {
-        initializeGame(map);
+    initializeGame(map);
+    
+    //create our player entity with some premade components
+    player = Crafty.e("2D, Canvas, player, Bomber, Animate")
+      .attr({x: 160, y: 144, z: 1 })
+      .bomberControls(1)
+      .onBombDropped(function(data) {
+        console.log('You dropped a bomb at ' + data.gridPosition[0] + ', ' + data.gridPosition[1]);
+        dropBomb(socket, [data.gridPosition[0], data.gridPosition[1]]);
+      })
+      .onPlayerMoved(function(data) {
+        console.log("Moved from " + data.from.x +',' + data.from.y + ' to ' + data.to.x + ',' + data.to.y);
+        changePosition(socket, [data.to.x, data.to.y]);
+      });
   });
 
   //When a bomb is dropped
@@ -173,18 +186,5 @@ function initializeGame(map)
   
   Crafty.scene("main", function() {
     generateWorld();
-    
-    //create our player entity with some premade components
-    player = Crafty.e("2D, Canvas, player, Bomber, Animate")
-      .attr({x: 160, y: 144, z: 1, playerId: 1})
-      .bomberControls(1)
-      .onBombDropped(function(data) {
-        console.log("You dropped a bomb, " + data.playerId + ' at ' + data.gridPosition[0] + ', ' + data.gridPosition[1]);
-        dropBomb(socket, data.playerId, [data.gridPosition[0], data.gridPosition[1]]);
-      })
-      .onPlayerMoved(function(data) {
-        console.log("Moved from " + data.from.x +',' + data.from.y + ' to ' + data.to.x + ',' + data.to.y);
-        changePosition(socket, data.playerId, [data.to.x, data.to.y]);
-      });
   });
 };
