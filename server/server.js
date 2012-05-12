@@ -6,6 +6,16 @@ var app = require('http').createServer(handler)
 
 var clients = new Array();
 
+map = {
+  width: 25,
+  height: 20,
+  flowers: [
+    {x: 10, y: 10},
+    {x: 15, y: 15},
+    {x: 5, y: 5}
+  ]
+};
+
 app.listen(80);
 
 //Simple handler to serve up static files
@@ -47,6 +57,7 @@ io.sockets.on('connection', function (socket) {
 
   //On initial message
   socket.on('handshake', function (data) {
+    socket.emit('welcome', map);
     console.log("Got handshake");
     console.log(data);
     clients[id] = {id: socket.id}

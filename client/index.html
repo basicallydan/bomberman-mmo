@@ -16,31 +16,38 @@
 		  	socket = io.connect('localhost');
 		  	//socket = io.connect('http://10.246.38.47');
 		  	  socket.on('connect', function() {
-		  	  	initializeGame();
 		  	  	$('#nickName').attr('readOnly', '1');
 		  	  	$("#chat").fadeIn();
 		  	  	socket.emit('handshake', {nickName: $('#nickName').val() } )
 		  	  });
+
+		  	  //Should be received after handshake
+			  socket.on('welcome', function(map)
+			  {
+  	  	  		initializeGame(map);
+			  });
+
 			  socket.on('receiveChat', function (data) {
 				$('#messages').append('<p>' + data.message + '</p>');
 				$("#messages").prop({ scrollTop: $("#messages").prop("scrollHeight") });
-			});
-		}
-		function sendMessage()
-		{
-			var m =  $("#message");
-			socket.emit('sendChat',
-				{
-					message: $("#message").val(),
-					nickName: $("#nickName").val()
-				}
-			);
-			m.val('');
-		}
-		function dropBombTest()
-		{
-			dropBomb(socket, $("#dropBombPlayerId").val(), [23, 43]);
-		}
+			  });
+
+			}
+			function sendMessage()
+			{
+				var m =  $("#message");
+				socket.emit('sendChat',
+					{
+						message: $("#message").val(),
+						nickName: $("#nickName").val()
+					}
+				);
+				m.val('');
+			}
+			function dropBombTest()
+			{
+				dropBomb(socket, $("#dropBombPlayerId").val(), [23, 43]);
+			}
 		</script>
 		<style>
 			body, html { margin:0; padding: 0; overflow:hidden; font-family:Arial; font-size:20px }
