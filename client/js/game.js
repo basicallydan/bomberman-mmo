@@ -1,3 +1,5 @@
+var player;
+
 window.onload = function() {
   //start crafty
   Crafty.init(400, 320);
