@@ -76,7 +76,7 @@ function connect()
   //When a bomb is explodes
   socket.on('bombExploded', function(bombData) {
       flash('Bomb Exploded. id: ' + bombData.id + ', x: ' + bombData.x + ', y: ' + bombData.y + ', blastRadius: ' + bombData.blastRadius, '800');
-      explodeBomb(bombData.id);
+      explodeBomb(bombData.id, bombData.blastRadius, bombData.x, bombData.y);
   });
 
 
@@ -134,9 +134,24 @@ function addBomb(id, x, y) {
   bombs[id] = droppedBomb;
 }
 
-function explodeBomb(id) {
+function explodeBomb(id, radius, x, y) {
+  for (i = 1; i < radius; i++) {
+    var explosion = Crafty.e("2D, Canvas, explosion, Explosion")
+      .attr({x: (x + i) * spriteSize, y: y * spriteSize});
+    var explosion = Crafty.e("2D, Canvas, explosion, Explosion")
+      .attr({x: (x - i) * spriteSize, y: y * spriteSize});
+    var explosion = Crafty.e("2D, Canvas, explosion, Explosion")
+      .attr({x: x * spriteSize, y: (y - i) * spriteSize});
+    var explosion = Crafty.e("2D, Canvas, explosion, Explosion")
+      .attr({x: x * spriteSize, y: (y + i) * spriteSize});
+  }
+
+  var explosion = Crafty.e("2D, Canvas, explosion, Explosion")
+      .attr({x: x * spriteSize, y: y * spriteSize});
+
+
   bombs[id].destroy();
-  // delete bombs[id];
+  delete bombs[id];
 }
 
 function initializeGame(map, startX, startY)
@@ -157,7 +172,8 @@ function initializeGame(map, startX, startY)
       bush1: [0,2],
       bush2: [1,2],
       player: [0,3],
-      bomb: [2,2]
+      bomb: [2,2],
+      explosion: [3,2]
     }
   );
   
