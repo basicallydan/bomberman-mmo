@@ -44,7 +44,11 @@ Crafty.c('Bomber', {
       })
       .bind('KeyUp', function(e) {
         if (e.key == Crafty.keys['ENTER']) {
-          this.trigger('BombDropped', { gridPosition: this.getGridPosition() });
+          if(this.isOnTopOfASolid() === false) {
+            this.trigger('BombDropped', { gridPosition: this.getGridPosition() });
+          } else {
+            console.log("Can't drop a bomb on top of another solid");
+          }
         }
 
         if(e.key === Crafty.keys['LEFT_ARROW']) {
@@ -88,11 +92,7 @@ Crafty.c('Bomber', {
       // A rudimentary way to prevent the user from passing solid areas
       .bind('Moved', function(from) {
         if(this.hit('solid')) {
-          var hitObject = this.hit('solid');
-          console.log('Hit object is at ' + hitObject[0].obj.x + ',' + hitObject[0].obj.y);
-          var gridX = hitObject[0].obj.x / spriteSize;
-          var gridY = hitObject[0].obj.y / spriteSize;
-          if(this.getGridPosition()[0] !== gridX || this.getGridPosition()[1] !== gridY) {
+          if(this.isOnTopOfASolid() === false) {
             this.attr({x: from.x, y:from.y});
           }
         }
@@ -101,6 +101,18 @@ Crafty.c('Bomber', {
         }
       });
     return this;
+  },
+  isOnTopOfASolid : function () {
+    if(this.hit('solid')) {
+      var hitObject = this.hit('solid');
+      console.log('Hit object is at ' + hitObject[0].obj.x + ',' + hitObject[0].obj.y);
+      var gridX = hitObject[0].obj.x / spriteSize;
+      var gridY = hitObject[0].obj.y / spriteSize;
+      if(this.getGridPosition()[0] === gridX && this.getGridPosition()[1] === gridY) {
+        return true;
+      }
+    }
+    return false;
   },
   bomberControls: function(speed) {
     this.multiway(speed, {UP_ARROW: -90, DOWN_ARROW: 90, RIGHT_ARROW: 0, LEFT_ARROW: 180});
