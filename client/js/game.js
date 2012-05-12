@@ -34,21 +34,6 @@ function sendMessage()
   );
   m.val('');
 }
-
-function dropBombTest()
-{
-  x = $('#bombx').val();
-  y = $('#bomby').val();
-  pid = $("#playerId").val();
-  dropBomb(socket, pid, [x, y]);
-}
-function move()
-{
-  x = $('#movex').val();
-  y = $('#movey').val();
-  pid = $("#playerId").val();
-  move(socket, pid, [x, y]);
-}
   
 function connect()
 {
@@ -97,8 +82,7 @@ function connect()
   });
 
   socket.on('dead', function(data) {
-    flash('YOU IS DEAD!', 'F00');
-    destroyEnemy(data.id);
+    flash('YOU IS DEAD!!!', 'F00');
   });
 
   socket.on('playerMoved', function(data) {
@@ -136,7 +120,7 @@ function addBomb(id, x, y) {
 
 function explodeBomb(id) {
   bombs[id].destroy();
-  // delete bombs[id];
+  delete bombs[id];
 }
 
 function initializeGame(map, startX, startY)
