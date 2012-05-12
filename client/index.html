@@ -13,10 +13,11 @@
 		  	  	$('#nickName').attr('readOnly', '1');
 		  	  	$('#letMeIn').fadeOut();
 		  	  	$("#chat").fadeIn();
+		  	  	socket.emit('handshake', {nickName: $('#nickName').val() } )
 		  	  });
 			  socket.on('receiveChat', function (data) {
-			    var m = $('#messages');
-			    m.val(data.message + "\r\n" + m.val());
+				$('#messages').append('<p>' + data.message + '</p>');
+				$("#messages").prop({ scrollTop: $("#messages").prop("scrollHeight") });
 			});
 		}
 		function sendMessage()
@@ -45,8 +46,8 @@
 		</div>
 		<div id="chat" style="display: none;">
 			<h2>Chat</h2>
-			<textarea rows="10" id="messages">Connecting...
-			</textarea>
+			<div id='messages' style='height: 300px; width: 300px; overflow-y: scroll;'>
+			</div>
 			<br />
 			<input type="text" name="message" id="message" />
 			<input type="button" onclick="sendMessage();" value="send"/>
