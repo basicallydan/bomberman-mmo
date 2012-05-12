@@ -87,12 +87,6 @@ io.sockets.on('connection', function (socket) {
     console.log(data);
   });
 
-  socket.on('message', function(message) {
-      console.log('Receieved message');
-      console.log(message);
-    }
-  );
-
   function sendToAll(message)
   {
     socket.broadcast.emit('receiveChat', { message: message})
