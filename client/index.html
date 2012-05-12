@@ -11,6 +11,7 @@
 		  	  	$('#nickName').attr('readOnly', '1');
 		  	  	$('#letMeIn').fadeOut();
 		  	  	$("#chat").fadeIn();
+		  	  	socket.emit('handshake', {nickName: $('#nickName').val() } )
 		  	  });
 			  socket.on('receiveChat', function (data) {
 			    var m = $('#messages');
