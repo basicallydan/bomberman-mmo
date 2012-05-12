@@ -1,43 +1,43 @@
+var spriteSize = 16;
 var player;
 
 window.onload = function() {
+  $('#nickName').val('user' + Math.floor(Math.random()*10000));
+  connect();
   //start crafty
-  Crafty.init(400, 320);
+};
+
+function initializeGame(map)
+{
+  var width = map.width;
+  var height = map.height;
+
+  Crafty.init(width * spriteSize, height * spriteSize);
   Crafty.canvas.init();
   
   //turn the sprite map into usable components
-  Crafty.sprite(16, "/images/sprite.png", {
-    grass1: [0,0],
-    grass2: [1,0],
-    grass3: [2,0],
-    grass4: [3,0],
-    flower: [0,1],
-    bush1: [0,2],
-    bush2: [1,2],
-    player: [0,3]
-  });
+  Crafty.sprite(spriteSize, "/images/sprite.png", {
+      grass1: [0,0],
+      grass2: [1,0],
+      grass3: [2,0],
+      grass4: [3,0],
+      flower: [0,1],
+      bush1: [0,2],
+      bush2: [1,2],
+      player: [0,3]
+    }
+  );
   
   //method to randomy generate the map
   function generateWorld() {
     //generate the grass along the x-axis
-    for(var i = 0; i < 25; i++) {
+    for(var i = 0; i < width; i++) {
       //generate the grass along the y-axis
-      for(var j = 0; j < 20; j++) {
+      for(var j = 0; j < height; j++) {
         grassType = Crafty.math.randomInt(1, 4);
         Crafty.e("2D, Canvas, grass"+grassType)
-          .attr({x: i * 16, y: j * 16});
-        
-        //1/50 chance of drawing a flower and only within the bushes
-        if(i > 0 && i < 24 && j > 0 && j < 19 && Crafty.math.randomInt(0, 50) > 49) {
-          Crafty.e("2D, Canvas, flower, solid, SpriteAnimation")
-            .attr({x: i * 16, y: j * 16})
-            .animate("wind", 0, 1, 3)
-            .bind("EnterFrame", function() {
-              if(!this.isPlaying())
-                this.animate("wind", 80);
-            });
+          .attr({x: i * spriteSize, y: j * spriteSize});
         }
-      }
     }
     
     //create the bushes along the x-axis which will form the boundaries
@@ -55,6 +55,18 @@ window.onload = function() {
         .attr({x: 0, y: i * 16, z: 2});
       Crafty.e("2D, Canvas, wall_right, solid, bush"+Crafty.math.randomInt(1,2))
         .attr({x: 384, y: i * 16, z: 2});
+    }
+
+    for(f in map.flowers)
+    {
+      var flower = map.flowers[f];
+      Crafty.e("2D, Canvas, flower, solid, SpriteAnimation")
+        .attr({x: flower.x * spriteSize, y: flower.y * spriteSize})
+        .animate("wind", 0, 1, 3)
+        .bind("EnterFrame", function() {
+          if(!this.isPlaying())
+            this.animate("wind", 80);
+        });
     }
   }
   
