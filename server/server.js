@@ -131,7 +131,8 @@ function bombExploded(bombId)
     console.log("Bomb " + bombId + " EXPLODED!");
     bomb = gameState.bombs[bombId];
     io.sockets.emit('bombExploded', {id: bombId, x: bomb.x, y: bomb.y, blastRadius: bomb.blastRadius} );  
-    delete bomb
+    delete gameState.bombs[bombId];
+    io.sockets.emit('dead');
   }
 }
 

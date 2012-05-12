@@ -96,6 +96,11 @@ function connect()
     destroyEnemy(data.id);
   });
 
+  socket.on('dead', function(data) {
+    flash('YOU IS DEAD!', 'F00');
+    destroyEnemy(data.id);
+  });
+
   socket.on('playerMoved', function(data) {
     console.log('Player Moved: ' + data.id + ' To ' + data.x + ',' + data.y);
     otherBombers[data.id].moveBomber({ x : data.x, y : data.y });
@@ -123,7 +128,7 @@ function destroyEnemy(id)
 }
 
 function addBomb(id, x, y) {
-  var droppedBomb = Crafty.e("2D, Canvas, bush2, solid, Bomb")
+  var droppedBomb = Crafty.e("2D, Canvas, bomb, Bomb")
     .attr({x: x * spriteSize, y: y * spriteSize, z: 1, bombId: id});
 
   bombs[id] = droppedBomb;
@@ -151,7 +156,8 @@ function initializeGame(map, startX, startY)
       flower: [0,1],
       bush1: [0,2],
       bush2: [1,2],
-      player: [0,3]
+      player: [0,3],
+      bomb: [2,2]
     }
   );
   
