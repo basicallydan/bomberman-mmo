@@ -257,7 +257,9 @@ function initializeGame(map, startX, startY)
     }
 
     for(var p in map.players) {
-      addEnemy(p, map.players[p].x, map.players[p].y);
+      if(p !== gameState.id) {
+        addEnemy(p, map.players[p].x, map.players[p].y);
+      }
     }
   });
 };
