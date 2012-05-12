@@ -69,13 +69,18 @@ function connect()
 
   //When a chat message is received
   socket.on('receiveChat', function (data) {
-  $('#messages').append('<p>' + data.message + '</p>');
-  $("#messages").prop({ scrollTop: $("#messages").prop("scrollHeight") });
+    $('#messages').append('<p>' + data.message + '</p>');
+    $("#messages").prop({ scrollTop: $("#messages").prop("scrollHeight") });
   });
 
   socket.on('playerJoined', function(data) {
     flash('Player Joined: ' + data.id, '080');
-    addEnemy(data.id);
+    addEnemy(data.id, data.x, data.y);
+  });
+
+  socket.on('playerLeft', function(data) {
+    flash('Player Left: ' + data.id, '008');
+    destroyEnemy(data.id);
   });
 
   socket.on('playerMoved', function(data) {
@@ -90,12 +95,18 @@ window.onload = function() {
   //start crafty
 };
 
-function addEnemy(id) {
+function addEnemy(id, x, y) {
   //create our player entity with some premade components
   var otherBomber = Crafty.e("2D, Canvas, player, OtherBomber, Animate")
-    .attr({x: 160, y: 144, z: 1, playerId: id});
+    .attr({x: x, y: y, z: 1, playerId: id});
 
   otherBombers[id] = otherBomber;
+}
+
+function destroyEnemy(id)
+{
+  otherBombers[id].destroy();
+  delete otherBombers[id];
 }
 
 function addBomb(id, x, y) {
@@ -190,7 +201,7 @@ function initializeGame(map, startX, startY)
     
     //create our player entity with some premade components
     player = Crafty.e("2D, Canvas, player, Bomber, Animate")
-      .attr({x: (startX * spriteSize), y: (startY * spriteSize), z: 1 })
+      .attr({x: startX, y: startY, z: 1 })
       .bomberControls(1)
       .onBombDropped(function(data) {
         console.log('You dropped a bomb at ' + data.gridPosition[0] + ', ' + data.gridPosition[1]);
