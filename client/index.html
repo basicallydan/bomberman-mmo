@@ -43,28 +43,31 @@
 		</script>
 		<style>
 			body, html { margin:0; padding: 0; overflow:hidden; font-family:Arial; font-size:20px }
-			#cr-stage { border:2px solid black; margin:5px auto; color:white }
+			#cr-stage {border:2px solid black; margin:50px auto; color:white }
+			#menu { float: left; margin: 10px 100px;	}
 		</style>
 	</head>
 	<body>
-		<h1>Something</h1>
-		<div id="nickname">
-			<h2>Nickname</h2>
-			<input type="text" name="nickName" id="nickName" />
-			<input type="button" id="letMeIn" onclick="connect();" value="Let me in!"/>
-		</div>
-		<div id="chat" style="display: none;">
-			<h2>Chat</h2>
-			<div id='messages' style='height: 300px; width: 300px; overflow-y: scroll;'>
+		<div id='menu'>
+			<h1>Something</h1>
+			<div id="	nickname">
+				<h2>Nickname</h2>
+				<input type="text" name="nickName" id="nickName" />
+				<input type="button" id="letMeIn" onclick="connect();" value="Let me in!"/>
 			</div>
-			<br />
-			<input type="text" name="message" id="message" />
-			<input type="button" onclick="sendMessage();" value="send"/>
-		</div>
-		<div id="testcommands">
-			<h2>Test commands</h2>
-			<input type="text" name="dropBombPlayerId" id="dropBombPlayerId" />
-			<input type="button" onclick="dropBombTest();" value="dropBomb" />
+			<div id="chat" style="display: none;">
+				<h2>Chat</h2>
+				<div id='messages' style='height: 300px; width: 300px; overflow-y: scroll;'>
+				</div>
+				<br />
+				<input type="text" name="message" id="message" />
+				<input type="button" onclick="sendMessage();" value="send"/>
+			</div>
+			<div id="testcommands">
+				<h2>Test commands</h2>
+				<input type="text" name="dropBombPlayerId" id="dropBombPlayerId" />
+				<input type="button" onclick="dropBombTest();" value="dropBomb" />
+			</div>
 		</div>
 	</body>
 </html>
