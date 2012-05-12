@@ -43,7 +43,7 @@
 			pid = $("#playerId").val();
 			dropBomb(socket, pid, [x, y]);
 		}
-		function move()
+		function moveTest()
 		{
 			x = $('#movex').val();
 			y = $('#movey').val();
@@ -87,7 +87,7 @@
 				<br />
 
 				x: <input type="text" name="movex" id="movex" /> y: <input type="text" name="movey" id="movey" />
-				<input type="button" onclick="move();" value="move there!" />
+				<input type="button" onclick="moveTest();" value="move there!" />
 			</div>
 			<br />
 			<input type="text" name="message" id="message" />

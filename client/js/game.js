@@ -88,6 +88,7 @@ window.onload = function() {
       })
       .onPlayerMoved(function(data) {
         console.log("Moved from " + data.from.x +',' + data.from.y + ' to ' + data.to.x + ',' + data.to.y);
+        changePosition(socket, data.playerId, [data.to.x, data.to.y]);
       });
   });
 };
