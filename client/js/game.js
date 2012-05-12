@@ -4,10 +4,10 @@ var player,
   socket;
 var flash_id = 0;
 
-function flash(message)
+function flash(message, background)
 {
   flash_id += 1;
-  $('body').append('<div id="flash-' + flash_id + '" class="flash">' + message + '</div>');
+  $('body').append('<div style="background-color: #' + background + ';" id="flash-' + flash_id + '" class="flash">' + message + '</div>');
   $('#flash-' + flash_id).fadeOut(6000);
 }
 
@@ -57,7 +57,7 @@ function connect()
 
   //When a bomb is dropped
   socket.on('bombDropped', function(bombData) {
-      flash('Bomb Dropped. x: ' + bombData.x + ', y: ' + bombData.y + ', blastRadius: ' + bombData.blastRadius);
+      flash('Bomb Dropped. x: ' + bombData.x + ', y: ' + bombData.y + ', blastRadius: ' + bombData.blastRadius, '800');
   });
 
   //When a chat message is received
@@ -67,7 +67,7 @@ function connect()
   });
 
   socket.on('playerJoined', function(data) {
-    flash('Player Joined: ' + data.id);
+    flash('Player Joined: ' + data.id, '080');
     addEnemy(data.id);
   });
 
