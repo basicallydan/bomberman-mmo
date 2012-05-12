@@ -62,7 +62,7 @@ io.sockets.on('connection', function (socket) {
     console.log(data);
     clients[id] = {id: socket.id}
     clients[id].nickName = data.nickName;
-    sendToAll(data.nickName + ' has joined');
+    sendMessageToAll(data.nickName + ' has joined');
   });
 
 
@@ -71,19 +71,19 @@ io.sockets.on('connection', function (socket) {
      //Nickname changed
     if (clients[id].nickName != data.nickName)
     {
-      sendToAll(clients[id].nickName + " is now called " + data.nickName);
+      sendMessageToAll(clients[id].nickName + " is now called " + data.nickName);
       clients[id].nickName = data.nickName;
     }
 
     console.log("Got Data");
     console.log(data);
     var message = data.nickName + ": " + data.message;
-    sendToAll(message);
+    sendMessageToAll(message);
   });
 
   socket.on('disconnect', function() {
     console.log('Client disconnected!');
-    sendToAll(clients[id] + ' has left');
+    sendMessageToAll(clients[id] + ' has left');
     delete clients[id]
   });
 
@@ -100,9 +100,10 @@ io.sockets.on('connection', function (socket) {
 function bombDropped(clientId, positionX, positionY)
 {
   console.log("Bomb dropped at " + positionX + "," + positionY + " by " + clientId);
+  io.sockets.emit('bombDropped', {x: positionX, y: positionY, blastRadius: 1} );
 }
 
-function sendToAll(message)
+function sendMessageToAll(message)
 {
   io.sockets.emit('receiveChat', { message: message})
 }

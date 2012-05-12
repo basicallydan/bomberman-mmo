@@ -27,13 +27,20 @@
   	  	  		initializeGame(map);
 			  });
 
+			  //When a bomb is dropped
+			  socket.on('bombDropped', function(bombData) {
+			  	alert('Bomb Dropped. x: ' + bombData.x + ', y: ' + bombData.y + ', blastRadius: ' + bombData.blastRadius);
+			  });
+
+			  //When a chat message is received
 			  socket.on('receiveChat', function (data) {
 				$('#messages').append('<p>' + data.message + '</p>');
 				$("#messages").prop({ scrollTop: $("#messages").prop("scrollHeight") });
 			  });
 
+
 			}
-			
+
 			function sendMessage()
 			{
 				var m =  $("#message");
