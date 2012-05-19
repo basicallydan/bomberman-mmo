@@ -26,18 +26,21 @@
 				color: #fff;
 				border-radius: 5px;
 			}
+			.hint { font-size: 0.7em;}
 		</style>
 	</head>
 	<body>
 		<div id='menu'>
-			<h1>Something</h1>
+			<h1>Bomberman!</h1>
 			<div id="	nickname">
 				<h2>Nickname</h2>
+				<p class="hint">(Totally irrelevant!)</p>
 				<input type="text" name="nickName" id="nickName" />
 				<input type="button" id="letMeIn" onclick="connect();" value="Let me in!"/>
 			</div>
 			<div id="chat" style="display: none;">
 				<h2>Chat</h2>
+				<p class="hint">(Never used!)</p>
 				<div id='messages' style='height: 300px; width: 300px; overflow-y: scroll;'>
 				</div>
 				<br />

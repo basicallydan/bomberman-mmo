@@ -67,6 +67,8 @@ io.sockets.on('connection', function (socket) {
     gameState.players[id] = {x: startX * spriteSize, y: startY * spriteSize}
 
     socket.emit('welcome', {
+
+      id: id,
       gameState: gameState,
       x: startX * spriteSize,
       y: startY * spriteSize
