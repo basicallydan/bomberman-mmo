@@ -30,7 +30,7 @@ function handler (request, response) {
     var filePath = request.url;
     if (filePath == '/')
         filePath = '/index.html';
-    filePath = "./../client" + filePath;
+    filePath = "./client" + filePath;
     console.log('  file path: ' + filePath);
     path.exists(filePath, function(exists) {
      
