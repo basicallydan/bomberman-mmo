@@ -163,9 +163,9 @@ function sendMessageToAll(message)
 }
 
 //Probably won't need this but w/e
-setInterval(function() {
-  console.log('Status Update:');
-  // console.log(clients);
-  console.log('Game state:');
-  console.log(gameState);
-}, 1000);
+//setInterval(function() {
+//  console.log('Status Update:');
+//  console.log(clients);
+//  console.log('Game state:');
+//  console.log(gameState);
+//}, 1000);
