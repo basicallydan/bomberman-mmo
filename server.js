@@ -23,10 +23,10 @@ var gameState = {
 
 var port = process.env.PORT || port;
 
-io.configure(function () { 
-  io.set("transports", ["xhr-polling"]); 
-  io.set("polling duration", 10); 
-});
+// io.configure(function () { 
+//   io.set("transports", ["xhr-polling"]); 
+//   io.set("polling duration", 10); 
+// });
 
 app.listen(port);
 

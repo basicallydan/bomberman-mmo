@@ -39,7 +39,7 @@ function connect()
 {
   $('#letMeIn').fadeOut();
   // socket = io.connect('localhost');
-  socket = io.connect('http://10.246.38.47');
+  socket = io.connect('http://node-bomberman.herokuapp.com');
     socket.on('connect', function() {
       $('#nickName').attr('readOnly', '1');
       $("#chat").fadeIn();
