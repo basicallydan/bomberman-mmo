@@ -21,7 +21,8 @@ var gameState = {
   players: {}
 };
 
-app.listen(80);
+var port = process.env.PORT || port;
+app.listen(port);
 
 //Simple handler to serve up static files
 function handler (request, response) {
